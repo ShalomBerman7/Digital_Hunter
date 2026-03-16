@@ -11,7 +11,7 @@ def main(data):
     try:
         create_database()
         create_table()
-        insert_into(data['timestamp'], data['signal_id'], data['entity_id'], data['weapon_type'])
+        insert_into(data['timestamp'], data['signal_id'], data['entity_id'], data['result'])
         log_event('info', 'inserted item to intel')
     except Exception as e:
         log_event('error', e)

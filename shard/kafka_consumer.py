@@ -1,6 +1,6 @@
 from confluent_kafka import Consumer, KafkaError
 from shard.logger import log_event
-from shard.validation import validate_message
+from shard.validation import validate_intel, validate_damage, validate_attack
 
 class KafkaConsumer:
     def __init__(self, topic, group_id):
@@ -28,9 +28,9 @@ class KafkaConsumer:
 
                 try:
                     data = msg.value()
-                    # is_valid = validate_message(data)
-                    # if is_valid:
-                    #     callback(data)
+                    # if validate_intel(data) != True or validate_damage(data) != True or validate_attack(data) != True:
+                    #     pass
+                        # send to topic dlq_signals_intel
                     callback(data)
                 except:
                     log_event('ERROR', 'not invalid')

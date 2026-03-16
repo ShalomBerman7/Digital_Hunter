@@ -5,7 +5,8 @@ import os
 password = os.getenv('MYSQL_ROOT_PASSWORD', 'password')
 con = mysql.connector.connect(user='user',
                               password=password,
-                              host='localhost')
+                              host='localhost',
+                              database='digital_hunter')
 
 cursor = con.cursor()
 
@@ -41,10 +42,11 @@ def create_table():
 
 def insert_into(timestamp, signal_id, entity_id, reported_lat, reported_lon, signal_type, priority_level):
     try:
-        cursor.execute("""INSERT INTO intel
-                        (timestamp, signal_id, entity_id, reported_lat, reported_lon, signal_type, priority_level)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-                       (timestamp, signal_id, entity_id, reported_lat, reported_lon, signal_type, priority_level))
+        query = """INSERT INTO intel
+                    (timestamp, signal_id, entity_id, reported_lat, reported_lon, signal_type, priority_level)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)"""
+        values = (timestamp, signal_id, entity_id, reported_lat, reported_lon, signal_type, priority_level)
+        cursor.execute(query, values)
         con.commit()
         log_event(level='INFO', message='inserted data to table intel')
 
