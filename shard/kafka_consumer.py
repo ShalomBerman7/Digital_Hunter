@@ -1,7 +1,6 @@
 from confluent_kafka import Consumer, KafkaError
 from shard.logger import log_event
-import json
-
+from shard.validation import validate_message
 
 class KafkaConsumer:
     def __init__(self, topic, group_id):
@@ -20,15 +19,22 @@ class KafkaConsumer:
                 if msg is None: continue
                 if msg.error():
                     if msg.error().code() == KafkaError._PARTITION_EOF:
-                        # loger
                         continue
                     elif msg.error():
                         log_event(level='ERROR', message='Connection to Kafka failed')
                         break
+
                 log_event(level='INFO', message='Received message from Kafka')
 
-                data = json.loads(msg.value())
-                callback(data)
+                try:
+                    data = msg.value()
+                    # is_valid = validate_message(data)
+                    # if is_valid:
+                    #     callback(data)
+                    callback(data)
+                except:
+                    log_event('ERROR', 'not invalid')
+                    continue
 
         finally:
             self.consumer.close()
