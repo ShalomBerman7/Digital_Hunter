@@ -39,10 +39,13 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: digital_hunter
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 5s
       timeout: 3s
       retries: 10
