@@ -17,6 +17,37 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
 
+
+  elasticsearch:
+    image: elasticsearch:7.17.10
+    container_name: muezzin-elastic
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: kibana:7.17.10
+    container_name: muezzin-kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+
 volumes:
   kafka-data:
 
