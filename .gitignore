@@ -1,2 +1,6 @@
 .venv
 .idea
+shard/__pycache__/
+service_intel/__pycache__/
+service_attack/__pycache__/
+service_damage/__pycache__/
