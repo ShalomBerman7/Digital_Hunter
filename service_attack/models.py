@@ -22,15 +22,11 @@ def create_database():
 
 def create_table():
     try:
-        cursor.execute("""CREATE TABLE IF NOT EXISTS intel (
+        cursor.execute("""CREATE TABLE IF NOT EXISTS attack (
                         timestamp TIMESTAMP NOT NULL,
-                        signal_id varchar(50) NOT NULL PRIMARY KEY,
-                        entity_id varchar(15) NOT NULL,
-                        reported_lat float NOT NULL,
-                        reported_lon float NOT NULL,
-                        
-                        signal_type varchar(12) NOT NULL,
-                        priority_level int(10) NOT NULL
+                        attack_id varchar(50) NOT NULL PRIMARY KEY,
+                        entity_id varchar(20) NOT NULL,
+                        weapon_type varchar(20) NOT NULL,
                         )""")
         con.commit()
         log_event(level='INFO', message='exists/create table intel')
@@ -39,12 +35,12 @@ def create_table():
         log_event(level='ERROR', message=e)
 
 
-def insert_into(timestamp, signal_id, entity_id, reported_lat, reported_lon, signal_type, priority_level):
+def insert_into(timestamp, attack_id, entity_id, weapon_type):
     try:
-        cursor.execute("""INSERT INTO intel
-                        (timestamp, signal_id, entity_id, reported_lat, reported_lon, signal_type, priority_level)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-                       (timestamp, signal_id, entity_id, reported_lat, reported_lon, signal_type, priority_level))
+        cursor.execute("""INSERT INTO attack
+                        (timestamp, attack_id, entity_id, weapon_type)
+                        VALUES (%s, %s, %s, %s)""",
+                       (timestamp, attack_id, entity_id, weapon_type))
         con.commit()
         log_event(level='INFO', message='inserted data to table intel')
 
