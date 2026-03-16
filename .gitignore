@@ -1,2 +1,3 @@
 .venv
 .idea
+shard/__pycache__/
